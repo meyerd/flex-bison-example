@@ -23,8 +23,7 @@ void yyerror(const char* s);
 %left T_MULTIPLY T_DIVIDE
 
 %type<ival> expression
-%type<ival> float_expression
-
+%type<fval> mixed_expression
 
 %start calculation
 
@@ -35,18 +34,26 @@ calculation:
 ;
 
 line: T_NEWLINE
-    | float_expression T_NEWLINE { printf("\tResult: %f\n", (float)$1);}
+    | mixed_expression T_NEWLINE { printf("\tResult: %f\n", $1);}
     | expression T_NEWLINE { printf("\tResult: %i\n", $1); } 
     | T_QUIT T_NEWLINE { printf("bye!\n"); exit(0); }
 ;
 
-float_expression: T_FLOAT                 		 { $$ = $1; }
-	  | float_expression T_PLUS float_expression	 { $$ = $1 + $3; }
-	  | float_expression T_MINUS float_expression	 { $$ = $1 - $3; }
-	  | float_expression T_MULTIPLY float_expression { $$ = $1 * $3; }
-	  | float_expression T_DIVIDE float_expression	 { $$ = $1 / $3; }
-	  | T_LEFT float_expression T_RIGHT		 { $$ = $2; }
-
+mixed_expression: T_FLOAT                 		 { $$ = $1; }
+	  | mixed_expression T_PLUS mixed_expression	 { $$ = $1 + $3; }
+	  | mixed_expression T_MINUS mixed_expression	 { $$ = $1 - $3; }
+	  | mixed_expression T_MULTIPLY mixed_expression { $$ = $1 * $3; }
+	  | mixed_expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; }
+	  | T_LEFT mixed_expression T_RIGHT		 { $$ = $2; }
+	  | expression T_PLUS mixed_expression	 	 { $$ = $1 + $3; }
+	  | expression T_MINUS mixed_expression	 	 { $$ = $1 - $3; }
+	  | expression T_MULTIPLY mixed_expression 	 { $$ = $1 * $3; }
+	  | expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; }
+	  | mixed_expression T_PLUS expression	 	 { $$ = $1 + $3; }
+	  | mixed_expression T_MINUS expression	 	 { $$ = $1 - $3; }
+	  | mixed_expression T_MULTIPLY expression 	 { $$ = $1 * $3; }
+	  | mixed_expression T_DIVIDE expression	 { $$ = $1 / $3; }
+;
 
 expression: T_INT				{ $$ = $1; }
 	  | expression T_PLUS expression	{ $$ = $1 + $3; }
@@ -54,7 +61,7 @@ expression: T_INT				{ $$ = $1; }
 	  | expression T_MULTIPLY expression	{ $$ = $1 * $3; }
 	  | expression T_DIVIDE expression	{ $$ = $1 / $3; }
 	  | T_LEFT expression T_RIGHT		{ $$ = $2; }
-  ;
+;
 
 %%
 
