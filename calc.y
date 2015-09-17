@@ -35,17 +35,17 @@ calculation:
 ;
 
 line: T_NEWLINE
-    | float_expression T_NEWLINE {printf("\tResult: %f\n", (float) $1);}
+    | float_expression T_NEWLINE { printf("\tResult: %f\n", (float)$1);}
     | expression T_NEWLINE { printf("\tResult: %i\n", $1); } 
     | T_QUIT T_NEWLINE { printf("bye!\n"); exit(0); }
 ;
 
-float_expression: T_FLOAT                 { $$ = $1; }
-	  | float_expression T_PLUS float_expression	{ $$ = $1 + $3; }
-	  | float_expression T_MINUS float_expression	{ $$ = $1 - $3; }
-	  | float_expression T_MULTIPLY float_expression	{ $$ = $1 * $3; }
-	  | float_expression T_DIVIDE float_expression	{ $$ = $1 / $3; }
-	  | T_LEFT float_expression T_RIGHT		{ $$ = $2; }
+float_expression: T_FLOAT                 		 { $$ = $1; }
+	  | float_expression T_PLUS float_expression	 { $$ = $1 + $3; }
+	  | float_expression T_MINUS float_expression	 { $$ = $1 - $3; }
+	  | float_expression T_MULTIPLY float_expression { $$ = $1 * $3; }
+	  | float_expression T_DIVIDE float_expression	 { $$ = $1 / $3; }
+	  | T_LEFT float_expression T_RIGHT		 { $$ = $2; }
 
 
 expression: T_INT				{ $$ = $1; }
