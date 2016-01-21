@@ -65,12 +65,14 @@ expression: T_INT				{ $$ = $1; }
 
 %%
 
-main() {
+int main() {
 	yyin = stdin;
 
 	do { 
 		yyparse();
 	} while(!feof(yyin));
+
+	return 0;
 }
 
 void yyerror(const char* s) {
