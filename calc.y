@@ -29,13 +29,13 @@ void yyerror(const char* s);
 
 %%
 
-calculation: 
+calculation:
 	   | calculation line
 ;
 
 line: T_NEWLINE
     | mixed_expression T_NEWLINE { printf("\tResult: %f\n", $1);}
-    | expression T_NEWLINE { printf("\tResult: %i\n", $1); } 
+    | expression T_NEWLINE { printf("\tResult: %i\n", $1); }
     | T_QUIT T_NEWLINE { printf("bye!\n"); exit(0); }
 ;
 
@@ -68,7 +68,7 @@ expression: T_INT				{ $$ = $1; }
 int main() {
 	yyin = stdin;
 
-	do { 
+	do {
 		yyparse();
 	} while(!feof(yyin));
 
