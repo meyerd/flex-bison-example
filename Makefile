@@ -1,7 +1,7 @@
 all: calc
 
 calc.tab.c calc.tab.h:	calc.y
-	bison --debug -t -v -d calc.y
+	bison --debug -v -d calc.y
 
 lex.yy.c: calc.l calc.tab.h
 	flex calc.l
