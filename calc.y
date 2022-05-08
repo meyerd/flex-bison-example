@@ -57,9 +57,12 @@ mixed_expression: T_FLOAT                 		 { $$ = $1; }
 ;
 
 expression: T_INT				{ $$ = $1; }
-	  | expression T_PLUS expression	{ $$ = $1 + $3; }
-	  | expression T_MINUS expression	{ $$ = $1 - $3; }
-	  | expression T_MULTIPLY expression	{ $$ = $1 * $3; }
+	  | expression T_PLUS expression
+	  	{ asm volatile ("addl %%ebx, %%eax;" : "=a" ($$) : "a" ($1) , "b" ($3)); }
+	  | expression T_MINUS expression
+	  	{ asm volatile ("subl %%ebx, %%eax;" : "=a" ($$) : "a" ($1) , "b" ($3)); }
+	  | expression T_MULTIPLY expression
+	  	{ asm volatile ("imull %%ebx, %%eax;" : "=a" ($$) : "a" ($1) , "b" ($3)); }
 	  | T_LEFT expression T_RIGHT		{ $$ = $2; }
 ;
 
